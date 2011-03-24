@@ -1,16 +1,13 @@
 #!/bin/bash
 # Script written by Sean Rice
-# The variable sp stands for "Server Packages", dp stands for "Desktop Packages", and up stands for "Unnecessary Packages"
-# Server Packages should be installed regardless of the installation
+# The variable cp stands for "Core Packages", dp stands for "Desktop Packages", and up stands for "Unnecessary Packages"
+# Core Packages should be installed regardless of the installation
 # Desktop Packages are optional and should only be installed on Ubuntu Desktop, not Server (command-line only)
-# Error log location = /home/<username>/6buntu-LOG.log
-#################################################### SETTINGS ############################################################
-InstallDesktop="yes"                #Change to "no" if you do not want to install the Graphical User Interface (Desktop) packages
-#################################################### SETTINGS ############################################################
+# Log location = /home/<username>/6buntu-LOG.log
 
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras gnome-themes-more"
-sp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
+cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
 games="gnome-games gbrainy"
 up="icedtea6-plugin firefox wide-dhcpv6-client"
 LOG=~/6buntu-LOG.log
@@ -27,46 +24,57 @@ sudo apt-get -f -y update
 echo "Would you like to start your 6buntu Modification Install?"
 echo -n "[Y]es or no: "
 read line
+echo "Would you like to install the Desktop Packages?"
+echo -n "[Y]es or no: "
+read line2
 if [ "$line" = yes -o Y ]
 then
-    read -p "$USER, I am installing Server packages: $sp"; sudo apt-get install -y $sp 
+    read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
     if [ "$?" = 0 ]
-        then 
-            echo "Server Packages Installed Successfully"
-            sudo echo "Ricebuntu-Server" > /etc/hostname
+        then
+            echo "Core Packages Installed Successfully"
+            echo date >> $LOG
+            echo "Core Packages Installed Successfully" >> $LOG
+            sudo cp ./config/hostname /etc/hostname
         else
             read -p "$USER, something went wrong! Please try the installation again"
-            echo "Server Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
-            exit 500  #Error 500 means Server Packages Installation Failure#
+            echo "Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
+            exit 500  #Error 500 means Core Packages Installation Failure#
     fi
-    if [ "$InstallDesktop" = yes ]
+    if [ "$line2" = yes ]
         then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
             if [ "$?" = 0 ]
-                then 
+                then
                     echo "$USER, I have successfully installed all necessary packages."
                 else
                     read -p "$USER, something went wrong! Please try the installation again"
-                    date >> $LOG        
+                    date >> $LOG
                     echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
                     exit 501  #Error 501 means Desktop Packages Installation Failure#
             fi
         else
-            echo "Desktop Packages skipped!  If this is incorrect, change the InstallDesktop variable in the install file to InstallDesktop=1"
-            echo "Desktop Packages skipped!  If this is incorrect, change the InstallDesktop variable in the install file to InstallDesktop=1" >> $LOG
+            echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully."
+            echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
     read -p "Please press Enter to continue"
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
 
 # Updating the system and building necessary dependencies
     sudo apt-get dist-upgrade -y
-    sudo apt-get build-dep -y openssh bash miredo
+    sudo apt-get build-dep -y openssh miredo
+    sudo cp ./config/issue.net /etc/issue.net
 # Configuring Miredo IPv6 Teredo Tunnelling
     sudo cp ./config/miredo.conf /etc/miredo.conf
 # Configuring SSH Server and restarting it
     sudo cp ./config/sshd_config /etc/ssh/sshd_config
     sudo cp ./config/ssh_config /etc/ssh/ssh_config
-    sudo cp ./config/issue.net /etc/issue.net
+    if [ ! -e ~/.ssh/id_rsa ]
+        then 
+            ssh-keygen -t rsa
+        else
+            echo "SSH keys already exist!  Continuing installation!"
+    fi
     sudo /etc/init.d/ssh restart
 # Restarting networking to load Miredo and obtain an IPv6 address
     sudo /etc/init.d/networking restart
