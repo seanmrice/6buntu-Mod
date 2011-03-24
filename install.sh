@@ -28,7 +28,7 @@ read -p "$USER, I am installing Server packages: $sp"; sudo apt-get install -y $
 if [ "$?" = 0 ]
     then 
         echo "Server Packages Installed Successfully"
-        echo "Ricebuntu-Server" > /etc/hostname
+        sudo echo "Ricebuntu-Server" > /etc/hostname
     else
         read -p "$USER, something went wrong! Please try the installation again"
         echo "Server Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $ERROR
