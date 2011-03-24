@@ -10,7 +10,7 @@ InstallDesktop=yes #Change to "no" if you do not want to install the Graphical U
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras gnome-themes-more"
 sp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
 games="gnome-games gbrainy"
-up="icedtea6-plugin firefox"
+up="icedtea6-plugin firefox wide-dhcpv6-client"
 LOG=~/6buntu-LOG.log
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 
