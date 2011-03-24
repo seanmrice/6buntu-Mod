@@ -1,5 +1,9 @@
+Before you begin, open the install.sh file and review the settings section. 
+
+If you don't want to install the desktop packages, change InstallDesktop=yes to InstallDesktop=no
+
 1.  Open up a terminal
 2.  cd into the directory in which this README file is located.
-3.  Execute ./setup.sh
-4.  Enter your sudo password and hit enter
+3.  Execute ./install.sh
+4.  Enter your password and hit enter
 5.  Respond to any prommpts that come up, and the installation will complete on its own
