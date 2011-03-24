@@ -39,7 +39,6 @@ then
             echo "Server Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
             exit 500  #Error 500 means Server Packages Installation Failure#
     fi
-# Comment out the following 3 lines if you don't want to install the desktop GUI features (if you are running Server Edition)
     if [ "$InstallDesktop" = yes ]
         then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
