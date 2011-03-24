@@ -4,6 +4,8 @@
 # Server Packages should be installed regardless of the installation
 # Desktop Packages are optional and should only be installed on Ubuntu Desktop, not Server (command-line only)
 # Error log location = /home/<username>/6buntu-ERROR.log
+InstallDesktop=yes #Change to "no" if you do not want to install the Graphical User Interface (Desktop) packages
+
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras gnome-themes-more"
 sp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
@@ -26,24 +28,29 @@ read -p "$USER, I am installing Server packages: $sp"; sudo apt-get install -y $
 if [ "$?" = 0 ]
     then 
         echo "Server Packages Installed Successfully"
+        echo "Ricebuntu-Server" > /etc/hostname
     else
         read -p "$USER, something went wrong! Please try the installation again"
         echo "Server Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $ERROR
         exit 500  #Error 500 means Server Packages Installation Failure#
 fi
 # Comment out the following 3 lines if you don't want to install the desktop GUI features (if you are running Server Edition)
-# Comment out the 3rd line (line 28) only if you don't want the default background
-read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
-if [ "$?" = 0 ]
-    then 
-        echo "Desktop Packages Installed Successfully"
+if [ $InstallDesktop = yes ]
+    then
+        read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
+        if [ "$?" = 0 ]
+            then 
+                echo "$USER, I have successfully installed all necessary packages."
+            else
+                read -p "$USER, something went wrong! Please try the installation again"
+                date >> $ERROR        
+                echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $ERROR
+                exit 501  #Error 501 means Desktop Packages Installation Failure#
+        fi
     else
-        read -p "$USER, something went wrong! Please try the installation again"
-        date >> $ERROR        
-        echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $ERROR
-        exit 501  #Error 501 means Desktop Packages Installation Failure#
+        echo "Desktop Packages skipped!  If this is incorrect, change the DI variable in the install file to InstallDesktop=yes"
+        echo "Desktop Packages skipped!  If this is incorrect, change the DI variable in the install file to InstallDesktop=yes" >> $ERROR
 fi
-echo "$USER, I have successfully installed all necessary packages."
 read -p "Please press Enter to continue"
 sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
 
