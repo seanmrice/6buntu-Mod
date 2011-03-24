@@ -4,7 +4,9 @@
 # Server Packages should be installed regardless of the installation
 # Desktop Packages are optional and should only be installed on Ubuntu Desktop, not Server (command-line only)
 # Error log location = /home/<username>/6buntu-LOG.log
-InstallDesktop=yes #Change to "no" if you do not want to install the Graphical User Interface (Desktop) packages
+#################################################### SETTINGS ############################################################
+InstallDesktop="yes"                #Change to "no" if you do not want to install the Graphical User Interface (Desktop) packages
+#################################################### SETTINGS ############################################################
 
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras gnome-themes-more"
@@ -25,7 +27,7 @@ sudo apt-get -f -y update
 echo "Would you like to start your 6buntu Modification Install?"
 echo -n "[Y]es or no: "
 read line
-if [ $line = yes -o Y -o y ]
+if [ "$line" = yes -o Y ]
 then
     read -p "$USER, I am installing Server packages: $sp"; sudo apt-get install -y $sp 
     if [ "$?" = 0 ]
@@ -38,7 +40,7 @@ then
             exit 500  #Error 500 means Server Packages Installation Failure#
     fi
 # Comment out the following 3 lines if you don't want to install the desktop GUI features (if you are running Server Edition)
-    if [ $InstallDesktop = yes ]
+    if [ "$InstallDesktop" = yes ]
         then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
             if [ "$?" = 0 ]
