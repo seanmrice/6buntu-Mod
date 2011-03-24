@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # Script written by Sean Rice
 # The variable sp stands for "Server Packages", dp stands for "Desktop Packages", and up stands for "Unnecessary Packages"
 # Server Packages should be installed regardless of the installation
