@@ -139,6 +139,19 @@ else
     sudo mkdir /infected
     sudo clamscan -r --move=/infected / >> ./ClamAV_Results &
 fi
+# Generating 6buntu config file in /etc
+if [ -e /etc/6buntu ]
+    then
+        if [ cat /etc/6buntu/6buntu-upcheck | grep "$version" != "$version" ]
+            then
+                echo "$version" > /etc/6buntu/6buntu-upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
+            else
+                echo "6buntu is up-to-date!"
+                date >> $LOG && echo "6buntu is up-to-date!" >> $LOG
+        fi
+    else
+        sudo mkdir /etc/6buntu && echo "$version" > /etc/6buntu/6buntu-upcheck && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
+fi
 # Rebooting system to finish install
 read -p "Hit Enter to reboot the system to complete the install"
 echo "$USER, the installation has completed successfully" >> $LOG
