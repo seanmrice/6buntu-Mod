@@ -64,7 +64,7 @@ then
 # Updating the system and building necessary dependencies
     sudo apt-get dist-upgrade -y
     sudo apt-get build-dep -y openssh miredo
-    echo $version > ./config/issue.net
+    echo "$version" > ./config/issue.net
     sudo cp ./config/issue.net /etc/issue.net
 # Configuring Miredo IPv6 Teredo Tunnelling
     sudo cp ./config/miredo.conf /etc/miredo.conf
