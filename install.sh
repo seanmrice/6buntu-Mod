@@ -11,6 +11,7 @@ cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel aut
 games="gnome-games gbrainy"
 up="icedtea6-plugin firefox wide-dhcpv6-client"
 LOG=~/6buntu-LOG.log
+version="6buntu 1.4"
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 
 # Saying hello!
@@ -63,6 +64,7 @@ then
 # Updating the system and building necessary dependencies
     sudo apt-get dist-upgrade -y
     sudo apt-get build-dep -y openssh miredo
+    echo $version > ./config/issue.net
     sudo cp ./config/issue.net /etc/issue.net
 # Configuring Miredo IPv6 Teredo Tunnelling
     sudo cp ./config/miredo.conf /etc/miredo.conf
