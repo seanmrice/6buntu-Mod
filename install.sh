@@ -22,24 +22,27 @@ sudo add-apt-repository ppa:ubuntu-wine/ppa
 sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo apt-get -f -y update
 # Executing installation block
-echo "Would you like to start your 6buntu Modification Install?"
-echo -n "[Y]es or no: "
+echo "Would you like to start your 6buntu Modification Install?  This will install Core Packages."
+echo -n "(Yes or no): "
 read line
 echo "Would you like to install the Desktop Packages?"
-echo -n "[Y]es or no: "
+echo -n "(Yes or no): "
 read line2
 if [ "$line" = yes -o Y ]
 then
+    echo "Starting installation per user request" >> $LOG 
     read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
     if [ "$?" = 0 ]
         then
             echo "Core Packages Installed Successfully"
-            echo date >> $LOG
+            date >> $LOG
             echo "Core Packages Installed Successfully" >> $LOG
-            sudo cp ./config/hostname /etc/hostname
+            sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
         else
             read -p "$USER, something went wrong! Please try the installation again"
+            date >> $LOGec
             echo "Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
+            echo "500" >> $LOG
             exit 500  #Error 500 means Core Packages Installation Failure#
     fi
     if [ "$line2" = yes ]
@@ -51,7 +54,8 @@ then
                 else
                     read -p "$USER, something went wrong! Please try the installation again"
                     date >> $LOG
-                    echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
+                    echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG1
+                    echo "501"
                     exit 501  #Error 501 means Desktop Packages Installation Failure#
             fi
         else
@@ -66,32 +70,34 @@ then
     sudo gconftool-2 --type=string --set /apps/gnome-session/options/splash_image "./config/6-splash.png"
     sudo gconftool-2 --type=string --set /apps/compiz/general/allscreens/options/active_plugins "core,cpp,move,resize,place,decoration,workarounds,mousepoll,text,imgjpg,regex,dbus,svg,gnomecompat,png,crashhandler,thumbnail,loginout,animation,blur,wobbly,cube,animationaddon,3d,rotate,scale,cubeaddon,expo,ezoom,bench"
 # Updating the system and building necessary dependencies
-    sudo apt-get dist-upgrade -y
-    sudo apt-get build-dep -y openssh miredo
+    sudo apt-get dist-upgrade -y && date >> $LOG && echo "All system packages updated successfully"
+    sudo apt-get build-dep -y openssh miredo && date >> $LOG && echo "Dependencies built successfully for OpenSSH and Miredo"
     echo "$version" > ./config/issue.net
     sudo cp ./config/issue.net /etc/issue.net
 # Configuring Miredo IPv6 Teredo Tunnelling
-    sudo cp ./config/miredo.conf /etc/miredo.conf
+    sudo cp ./config/miredo.conf /etc/miredo.conf && date >> $LOG && echo "Miredo configured successfully"
 # Configuring SSH Server and restarting it
     sudo cp ./config/sshd_config /etc/ssh/sshd_config
     sudo cp ./config/ssh_config /etc/ssh/ssh_config
     if [ ! -e ~/.ssh/id_rsa ]
         then 
-            ssh-keygen -t rsa
+            ssh-keygen -t rsa && date >> $LOG && echo "SSH Keys generated successfully!" >> $LOG
         else
             echo "SSH keys already exist!  Continuing installation!"
+            echo "SSH keys already exist!  Not generating new keys and continuing installation" >> $LOG
     fi
     sudo /etc/init.d/ssh restart
 # Restarting networking to load Miredo and obtain an IPv6 address
     sudo /etc/init.d/networking restart
 # Configuring and restarting Denyhosts
-    sudo cp ./config/denyhosts.conf /etc/denyhosts.conf
+    sudo cp ./config/denyhosts.conf /etc/denyhosts.conf  && date >> $LOG && echo "Denyhosts has been configured successfully" >> $LOG
     sudo /etc/init.d/denyhosts restart
 # Removing games and unnecessary applications
-    sudo apt-get autoremove -y "$games" "$up"
+    sudo apt-get autoremove -y "$games" "$up" && date >> $LOG && echo "Unnecessary Packages removed successfully"
 # Cleaning up unnecessary packages
     sudo apt-get autoremove -y
     sudo apt-get update
+    sleep 3
 else
     date >> $LOG
     echo "You chose to exit the installation" >> $LOG
@@ -110,5 +116,6 @@ else
 fi
 # Rebooting system to finish install
 read -p "Hit Enter to reboot the system to complete the install"
-sudo reboot -q
+echo "$USER, the installation has completed successfully" >> $LOG
+sudo reboot -f -q
 exit 0
