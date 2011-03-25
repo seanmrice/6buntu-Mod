@@ -139,7 +139,7 @@ else
     sudo mkdir /infected
     sudo clamscan -r --move=/infected / >> ./ClamAV_Results &
 fi
-# Generating 6buntu config file in /etc
+# Generating 6buntu upcheck file in /etc
 if [ -e /etc/6buntu ]
     then
         if [ cat /etc/6buntu/6buntu-upcheck | grep "$version" != "$version" ]
