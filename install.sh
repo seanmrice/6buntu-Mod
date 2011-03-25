@@ -6,16 +6,16 @@
 # Log location = /home/<username>/6buntu-LOG.log
 
 ######################################## DO NOT MODIFY THIS AREA ########################################################
+version="6buntu 1.4"
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras gnome-themes-more"
 cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
 games="gnome-games gbrainy"
 up="icedtea6-plugin firefox wide-dhcpv6-client"
 LOG=~/6buntu-LOG.log
-version="6buntu 1.4"
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 
 # Saying hello!
-echo "Hello $USER, Welcome to 6buntu version 1!"; date
+echo "Hello $USER, Welcome to $version!"; date
 # Configuring sources and updating them
 sudo cp ./config/sources.list /etc/apt/sources.list
 sudo add-apt-repository ppa:ubuntu-wine/ppa
@@ -60,7 +60,10 @@ then
     fi
     read -p "Please press Enter to continue"
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
-
+    sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_options "zoom"
+    sudo gconftool-2 --type=boolean --set /desktop/gnome/remote_access/require_encryption "1"
+    sudo gconftool-2 --type=string --set /apps/gnome-session/options/splash_image "./config/6-splash.png"
+    sudo gconftool-2 --type=string --set /apps/compiz/general/allscreens/options/active_plugins "core,cpp,move,resize,place,decoration,workarounds,mousepoll,text,imgjpg,regex,dbus,svg,gnomecompat,png,crashhandler,thumbnail,loginout,animation,blur,wobbly,cube,animationaddon,3d,rotate,scale,cubeaddon,expo,ezoom,bench"
 # Updating the system and building necessary dependencies
     sudo apt-get dist-upgrade -y
     sudo apt-get build-dep -y openssh miredo
