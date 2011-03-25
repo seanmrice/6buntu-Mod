@@ -59,6 +59,7 @@ then
             echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
     read -p "Please press Enter to continue"
+# Changing desktop configuration and enabling minor security features for remote desktop
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_options "zoom"
     sudo gconftool-2 --type=boolean --set /desktop/gnome/remote_access/require_encryption "1"
