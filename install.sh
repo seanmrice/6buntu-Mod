@@ -5,6 +5,7 @@
 # Desktop Packages are optional and should only be installed on Ubuntu Desktop, not Server (command-line only)
 # Log location = /home/<username>/6buntu-LOG.log
 # Virus/Rootkit removal locaton = /infected
+
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 version="6buntu 1.5"
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
@@ -27,9 +28,6 @@ sudo apt-get -f -y update
 echo "Would you like to start your 6buntu Modification Install?  This will install Core Packages.  If you choose no, the program will scan for viruses and exit."
 echo -n "(Yes or no): "
 read line
-echo "Would you like to install the Desktop Packages?"
-echo -n "(Yes or no): "
-read line2
 if [ "$line" = yes -o y ]
 then
     echo "Starting installation per user request" >> $LOG 
@@ -47,7 +45,10 @@ then
             echo "500" >> $LOG
             exit 500  #Error 500 means Core Packages Installation Failure#
     fi
-    if [ "$line2" = yes -o y ]
+    echo "Would you like to install the Desktop Packages?"
+    echo -n "(Yes or no): "
+    read line2
+    if [ "$line2" = yes ]
         then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
             if [ "$?" = 0 ]
@@ -157,7 +158,7 @@ else
     sudo mkdir /infected
     sudo clamscan -r --move=/infected / >> ./ClamAV_Results &
 fi
-# Generating 6buntu upcheck file in /etc
+# Generating 6buntu upcheck file in /etc if one doesn't exist already
 if [ -e /etc/6buntu ]
     then
         if [ cat $upcheck | grep "$version" != "$version" ]
