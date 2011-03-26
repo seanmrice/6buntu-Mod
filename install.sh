@@ -28,7 +28,7 @@ sudo apt-get -f -y update
 echo "Would you like to start your 6buntu Modification Install?  This will install Core Packages.  If you choose no, the program will scan for viruses and exit."
 echo -n "(Yes or no): "
 read line
-if [ "$line" = yes -o y ]
+if [ "$line" = yes -o [Yy] ]
 then
     echo "Starting installation per user request" >> $LOG 
     read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
