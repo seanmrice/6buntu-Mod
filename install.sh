@@ -26,12 +26,35 @@ sudo add-apt-repository ppa:ubuntu-wine/ppa
 sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
 sudo apt-get -f -y update
-# Executing installation block
+# Asking permission to install
 echo "Would you like to start your 6buntu Modification Install?  This will install Core Packages.  If you choose no, the program will scan for viruses and exit."
 echo -n "(Yes or no): "
 read line
 if [ "$line" = yes -o [Yy] ]
 then
+# Generating 6buntu upcheck file in /etc if one doesn't exist already
+    if [ -e /etc/6buntu ]
+        then
+            sudo chmod 1777 /etc/6buntu
+            if [ -e $upcheck ]
+                then
+                    sudo chmod 1775 /etc/6buntu
+                    if grep $upcheck -ne "$version" >> /dev/null
+                        then
+                            sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
+                        else
+                            echo "6buntu is up-to-date!"
+                            echo "$time 6buntu is up-to-date!" >> $LOG
+                    fi
+                else
+                    sudo chmod 1775 /etc/6buntu
+                    sudo echo "$version" > $upcheck && echo "$time Echo upcheck successfully completed" >> $LOG
+                    exit
+            fi
+        else
+            sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && echo "Successfully created upcheck file" && echo "$time Successfully created upcheck file" >> $LOG
+    fi
+# Executing installation block
     echo "Starting installation per user request" >> $LOG 
     read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
     if [ "$?" = 0 ]
@@ -153,29 +176,10 @@ else
     sudo mkdir /infected
     sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
 fi
-# Generating 6buntu upcheck file in /etc if one doesn't exist already
-if [ -e /etc/6buntu ]
-    then
-        sudo chmod 1777 /etc/6buntu
-        if [ -e $upcheck ]
-            then
-                if grep $upcheck -ne "$version" >> /dev/null
-                    then
-                        sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
-                    else
-                        echo "6buntu is up-to-date!"
-                        echo "$time 6buntu is up-to-date!" >> $LOG
-                fi
-            else
-                sudo echo "$version" > $upcheck && echo "$time Echo upcheck successfully completed" >> $LOG
-                exit
-        fi
-    else
-        sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && echo "Successfully created upcheck file" && echo "$time Successfully created upcheck file" >> $LOG
-fi
-sudo chmod 1775 /etc/6buntu
 # Securing /infected
-sudo chmod 7740 /infected
+sudo chmod 1740 /infected
+# Re-Locking /etc/6buntu
+sudo chmod 1775 /etc/6buntu
 # Rebooting system to finish install
 read -p "Hit Enter to reboot the system to complete the install"
 echo "$USER, the installation has completed successfully at $time" >> $LOG
