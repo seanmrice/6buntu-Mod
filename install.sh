@@ -169,7 +169,7 @@ if [ -e /etc/6buntu ]
                 date >> $LOG && echo "6buntu is up-to-date!" >> $LOG
         fi
     else
-        sudo mkdir /etc/6buntu && echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
+        sudo mkdir /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
 fi
 # Securing /infected
 sudo chmod 0750 /infected
