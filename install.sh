@@ -93,7 +93,7 @@ then
             echo "There were one or more errors during the system packages upgrade process" >> $LOG
     fi
     sudo apt-get build-dep -y openssh miredo && echo "Dependencies built successfully for OpenSSH and Miredo" && echo "$time Dependencies built successfully for OpenSSH and Mired" >> $LOG
-    echo "$version" > ./config/issue.net && echo "issue.net successfully updated" && echo "issue.net successfully updated"
+    echo "$version" > ./config/issue.net && sudo cp ./config/issue.net /etc/issue.net&& echo "issue.net successfully updated" && echo "issue.net successfully updated"
 # Configuring Miredo IPv6 Teredo Tunnelling
     sudo cp ./config/miredo.conf /etc/miredo.conf && echo "Miredo configured successfully" && echo "$time Miredo configured successfully" >> $LOG
 # Reloading Miredo
