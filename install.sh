@@ -20,18 +20,18 @@ time=$(date)
 # Saying hello!
 echo "Hello $USER, Welcome to $version!"
 echo $time
-# Configuring sources and updating them
-sudo cp ./config/sources.list /etc/apt/sources.list
-sudo add-apt-repository ppa:ubuntu-wine/ppa
-sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
-sudo apt-get -f -y update
 # Asking permission to install
 echo "Would you like to start your 6buntu Modification Install?  This will install Core Packages.  If you choose no, the program will scan for viruses and exit."
 echo -n "(Yes or no): "
 read line
 if [ "$line" = yes -o [Yy] ]
 then
+# Configuring sources and updating them
+    sudo cp ./config/sources.list /etc/apt/sources.list
+    sudo add-apt-repository ppa:ubuntu-wine/ppa
+    sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
+    sudo apt-get -f -y update
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
     if [ -e /etc/6buntu ]
         then
