@@ -153,10 +153,10 @@ sudo freshclam > ./ClamAV_Results &
 if [ -d /infected ]
 then
     chmod 0777 /infected  # Un-securing /infected to start clamscan
-    sudo clamscan -r --move=/infected / >> ./ClamAV_Results &
+    sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
 else
     sudo mkdir /infected
-    sudo clamscan -r --move=/infected / >> ./ClamAV_Results &
+    sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
 fi
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
 if [ -e /etc/6buntu ]
