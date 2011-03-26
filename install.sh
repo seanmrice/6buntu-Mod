@@ -109,8 +109,7 @@ then
     if [ "$?" = 0 ]
         then
             echo "All system packages upgraded successfully"
-            date >> $LOG
-            echo "All system packages upgraded successfully" >> $LOG
+            echo "$time All system packages upgraded successfully" >> $LOG
         else
             echo "There were one or more errors during the system packages upgrade process"
             echo "There were one or more errors during the system packages upgrade process" >> $LOG
