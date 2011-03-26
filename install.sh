@@ -129,7 +129,7 @@ then
     echo "Would you like to uninstall Unnecessary Packages?"
     echo -n "(yes/no)"
     read line3    
-    if [ "$line3" = yes -o y ]
+    if [ "$line3" = yes -o [Yy] ]
         then
             sudo apt-get autoremove -y "$games" "$up" && date >> $LOG && echo "Unnecessary Packages removed successfully"
         else
@@ -161,18 +161,26 @@ fi
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
 if [ -e /etc/6buntu ]
     then
-        if [ cat $upcheck | grep "$version" != "$version" ]
+        sudo chmod 1777 /etc/6buntu
+        if [ -e $upcheck ]
             then
-                sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
+                if grep $upcheck -ne "$version" >> /dev/null
+                    then
+                        sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
+                    else
+                        echo "6buntu is up-to-date!"
+                        date >> $LOG && echo "6buntu is up-to-date!" >> $LOG
+                fi
             else
-                echo "6buntu is up-to-date!"
-                date >> $LOG && echo "6buntu is up-to-date!" >> $LOG
+                sudo echo "$version" > $upcheck
+                exit
         fi
     else
-        sudo mkdir /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
+        sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
 fi
+sudo chmod 1775 /etc/6buntu
 # Securing /infected
-sudo chmod 0750 /infected
+sudo chmod 7740 /infected
 # Rebooting system to finish install
 read -p "Hit Enter to reboot the system to complete the install"
 echo "$USER, the installation has completed successfully" >> $LOG
