@@ -14,10 +14,12 @@ games="gnome-games gbrainy"
 up="icedtea6-plugin firefox wide-dhcpv6-client"
 LOG=~/6buntu-LOG.log
 upcheck=/etc/6buntu/6buntu-upcheck
+time=$(date)
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 
 # Saying hello!
-echo "Hello $USER, Welcome to $version!"; date
+echo "Hello $USER, Welcome to $version!"
+echo $time
 # Configuring sources and updating them
 sudo cp ./config/sources.list /etc/apt/sources.list
 sudo add-apt-repository ppa:ubuntu-wine/ppa
@@ -35,13 +37,11 @@ then
     if [ "$?" = 0 ]
         then
             echo "Core Packages Installed Successfully"
-            date >> $LOG
-            echo "Core Packages Installed Successfully" >> $LOG
+            echo "$time Core Packages Installed Successfully" >> $LOG
             sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
         else
             read -p "$USER, something went wrong! Please try the installation again"
-            date >> $LOG
-            echo "Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
+            echo "$time Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
             echo "500" >> $LOG
             exit 500  #Error 500 means Core Packages Installation Failure#
     fi
@@ -55,19 +55,16 @@ then
                 then
                     echo "$USER, I have successfully installed all necessary packages."
                     echo "Desktop Packages Installed Successfully"
-                    date >> $LOG
-                    echo "Desktop Packages Installed Successfully" >> $LOG
+                    echo "$time Desktop Packages Installed Successfully" >> $LOG
                 else
                     read -p "$USER, something went wrong! Please try the installation again"
-                    date >> $LOG
-                    echo "Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG1
+                    echo "$time Desktop Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG1
                     echo "501"
                     exit 501  #Error 501 means Desktop Packages Installation Failure#
             fi
         else
             echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully."
-            date >> $LOG
-            echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
+            echo "$time Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
     read -p "Please press Enter to continue"
 # Changing desktop configuration and enabling minor security features for remote desktop
@@ -79,12 +76,10 @@ then
     if [ "$?" = 0 ]
         then
             echo "Desktop settings configured successfully"
-            date >> $LOG
-            echo "Desktop settings configured successfully" >> $LOG
+            echo "$time Desktop settings configured successfully" >> $LOG
         else
             echo "Desktop settings could not be configured properly"
-            date >> $LOG
-            echo "Desktop settings could not be configured properly"
+            echo "$time Desktop settings could not be configured properly" >> $LOG
     fi
 # Updating the system and building necessary dependencies
     sudo apt-get dist-upgrade -y
@@ -95,45 +90,46 @@ then
             echo "All system packages upgraded successfully" >> $LOG
         else
             echo "There were one or more errors during the system packages upgrade process"
-            date >> $LOG
             echo "There were one or more errors during the system packages upgrade process" >> $LOG
     fi
-    sudo apt-get build-dep -y openssh miredo && date >> $LOG && echo "Dependencies built successfully for OpenSSH and Miredo"
-    echo "$version" > ./config/issue.net && date >> $LOG && echo "issue.net successfully updated"
+    sudo apt-get build-dep -y openssh miredo && echo "Dependencies built successfully for OpenSSH and Miredo" && echo "$time Dependencies built successfully for OpenSSH and Mired" >> $LOG
+    echo "$version" > ./config/issue.net && echo "issue.net successfully updated" && echo "issue.net successfully updated"
 # Configuring Miredo IPv6 Teredo Tunnelling
-    sudo cp ./config/miredo.conf /etc/miredo.conf && date >> $LOG && echo "Miredo configured successfully"
+    sudo cp ./config/miredo.conf /etc/miredo.conf && echo "Miredo configured successfully" && echo "$time Miredo configured successfully" >> $LOG
 # Reloading Miredo
     sudo /etc/init.d/miredo restart
     if [ "$?" != 0 ]
         then
             read -p "If this gives you an error about a fatal configuration error, chances are you aren't connected to the internet, please ensure connectivity before you reboot your computer and this will auto-correct itself."
         else
-            date >> $LOG
-            echo "Miredo daemon has restarted successfully" >> $LOG
+            echo "$time Miredo daemon has restarted successfully" >> $LOG
     fi
 # Configuring SSH Server and restarting it
     sudo cp ./config/sshd_config /etc/ssh/sshd_config
     sudo cp ./config/ssh_config /etc/ssh/ssh_config
     if [ ! -e ~/.ssh/id_rsa ]
         then 
-            ssh-keygen -t rsa && date >> $LOG && echo "SSH Keys generated successfully!" >> $LOG
+            ssh-keygen -t rsa && echo "$time SSH Keys generated successfully!" >> $LOG
         else
             echo "SSH keys already exist!  Continuing installation!"
-            echo "SSH keys already exist!  Not generating new keys, and continuing installation" >> $LOG
+            echo "$time SSH keys already exist!  Not generating new keys, and continuing installation" >> $LOG
     fi
     sudo /etc/init.d/ssh restart
 # Configuring and restarting Denyhosts
-    sudo cp ./config/denyhosts.conf /etc/denyhosts.conf  && date >> $LOG && echo "Denyhosts has been configured successfully" >> $LOG
+    sudo cp ./config/denyhosts.conf /etc/denyhosts.conf && echo "$time Denyhosts has been configured successfully" >> $LOG
     sudo /etc/init.d/denyhosts restart
 # Removing games and unnecessary applications
     echo "Would you like to uninstall Unnecessary Packages?"
     echo -n "(yes/no)"
     read line3    
-    if [ "$line3" = yes -o [Yy] ]
+    if [ "$line3" = yes ]
         then
-            sudo apt-get autoremove -y "$games" "$up" && date >> $LOG && echo "Unnecessary Packages removed successfully"
+            sudo apt-get autoremove -y "$games" "$up" $LOG && echo "$time Unnecessary Packages removed successfully"
         else
-            echo "Uninstallation of Unnecessary Packages has been skipped" && echo date >> $LOG && echo "Uninstallation of Unnecessary Packages has been skipped"
+            if [ "$line3" = no -o [Nn] ]
+                then        
+                    echo "Uninstallation of Unnecessary Packages has been skipped" && echo "$time Uninstallation of Unnecessary Packages has been skipped" >> $LOG
+            fi
     fi
 # Cleaning up unnecessary packages
     sudo apt-get autoremove -y
@@ -142,8 +138,7 @@ then
 else
     echo -n "You chose to exit the installation, shutting down..."
     sleep 5
-    date >> $LOG
-    echo "You chose to exit the installation" >> $LOG
+    echo "$time You chose to exit the installation" >> $LOG
     echo "2" >> $LOG
     exit 2
 fi
@@ -169,21 +164,21 @@ if [ -e /etc/6buntu ]
                         sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
                     else
                         echo "6buntu is up-to-date!"
-                        date >> $LOG && echo "6buntu is up-to-date!" >> $LOG
+                        echo "$time 6buntu is up-to-date!" >> $LOG
                 fi
             else
-                sudo echo "$version" > $upcheck
+                sudo echo "$version" > $upcheck && echo "$time Echo upcheck successfully completed" >> $LOG
                 exit
         fi
     else
-        sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && date >> $LOG && echo "Successfully created upcheck file" && echo "Successfully created upcheck file" >> $LOG
+        sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && sudo chmod 1770 /etc/6buntu/* && echo "Successfully created upcheck file" && echo "$time Successfully created upcheck file" >> $LOG
 fi
 sudo chmod 1775 /etc/6buntu
 # Securing /infected
 sudo chmod 7740 /infected
 # Rebooting system to finish install
 read -p "Hit Enter to reboot the system to complete the install"
-echo "$USER, the installation has completed successfully" >> $LOG
+echo "$USER, the installation has completed successfully at $time" >> $LOG
 # Rebooting computer
 sudo reboot -f -q
 exit 0
