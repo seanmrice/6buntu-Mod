@@ -166,6 +166,7 @@ else
     exit 2
 fi
 # Checking for rootkit and virus infections in the background
+sudo cp ./config/chkrootkit.conf /etc/chkrootkit.conf
 sudo chkrootkit > ./Rootkit_Scan_Results &
 sudo freshclam > ./ClamAV_Results &
 if [ -d /infected ]
