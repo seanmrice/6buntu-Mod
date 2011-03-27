@@ -24,7 +24,7 @@ if [ -e /etc/6buntu ]
             else
                 sudo chmod 1775 /etc/6buntu
                 sudo echo "$version" > $upcheck && echo "$time upcheck successfully completed" >> $LOG
-                exit
+                exit 300
         fi
     else
         sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && echo "$time Successfully created upcheck file" >> $LOG
