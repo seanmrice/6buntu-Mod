@@ -33,26 +33,12 @@ then
     sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
     sudo apt-get -f -y update
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
-    if [ -e /etc/6buntu ]
+    sudo ./scripts/upcheck.sh & 
+    if [ "$?" = 0 ]
         then
-            sudo chmod 1777 /etc/6buntu
-            if [ -e $upcheck ]
-                then
-                    sudo chmod 1775 /etc/6buntu
-                    if grep $upcheck -ne "$version" >> /dev/null
-                        then
-                            sudo echo "$version" > $upcheck && echo "Version update file written successfully" && date >> $LOG && echo "Version update file written successfully" >> $LOG
-                        else
-                            echo "6buntu is up-to-date!"
-                            echo "$time 6buntu is up-to-date!" >> $LOG
-                    fi
-                else
-                    sudo chmod 1775 /etc/6buntu
-                    sudo echo "$version" > $upcheck && echo "$time Echo upcheck successfully completed" >> $LOG
-                    exit
-            fi
+            read -p "$time Upcheck finished successfully" >> $LOG
         else
-            sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && echo "Successfully created upcheck file" && echo "$time Successfully created upcheck file" >> $LOG
+            read -p "$time Problem occured with Upcheck script and exited without a 0 status, please see logfile" >> $LOG
     fi
 # Executing installation block
     echo "Starting installation per user request" >> $LOG 
@@ -147,7 +133,7 @@ then
     read line3    
     if [ "$line3" = yes ]
         then
-            sudo apt-get autoremove -y "$games" "$up" $LOG && echo "$time Unnecessary Packages removed successfully"
+            && echo "$time Unnecessary Packages removed successfully" >> $LOG
         else
             if [ "$line3" = no -o [Nn] ]
                 then        
