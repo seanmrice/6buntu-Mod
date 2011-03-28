@@ -7,11 +7,10 @@
 # Virus/Rootkit removal locaton = /infected
 
 ######################################## DO NOT MODIFY THIS AREA ########################################################
-version="6buntu 1.5"
+version=$(echo | cat ./config/version)
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
 cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
-games="gnome-games gbrainy"
-up="icedtea6-plugin firefox wide-dhcpv6-client"
+up="icedtea6-plugin firefox wide-dhcpv6-client gnome-games gbrainy"  # Games were included in order to make the script slightly more obscure and discourage user editing.
 LOG=~/6buntu-LOG.log
 upcheck=/etc/6buntu/6buntu-upcheck
 time=$(date)
@@ -133,7 +132,7 @@ then
     read line3    
     if [ "$line3" = yes ]
         then
-            && echo "$time Unnecessary Packages removed successfully" >> $LOG
+            sudo apt-get -y -f autoremove "$up" $&& echo "$time Unnecessary Packages removed successfully" >> $LOG
         else
             if [ "$line3" = no -o [Nn] ]
                 then        
@@ -156,12 +155,12 @@ sudo cp ./config/chkrootkit.conf /etc/chkrootkit.conf
 sudo chkrootkit > ./Rootkit_Scan_Results &
 sudo freshclam > ./ClamAV_Results &
 if [ -d /infected ]
-then
-    chmod 0777 /infected  # Un-securing /infected to start clamscan
-    sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
-else
-    sudo mkdir /infected
-    sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
+    then
+        chmod 0777 /infected  # Un-securing /infected to start clamscan
+        sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
+    else
+        sudo mkdir /infected
+        sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
 fi
 # Securing /infected
 sudo chmod 1740 /infected

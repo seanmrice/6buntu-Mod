@@ -1,11 +1,7 @@
 #!/bin/bash
 #Upcheck script v0.01
 ######################################## DO NOT MODIFY THIS AREA ########################################################
-version="6buntu 1.5"
-dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
-cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
-games="gnome-games gbrainy"
-up="icedtea6-plugin firefox wide-dhcpv6-client"
+version=$(echo | cat ../config/version)
 LOG=~/6buntu-LOG.log
 upcheck=/etc/6buntu/6buntu-upcheck
 time=$(date)
