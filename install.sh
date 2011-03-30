@@ -44,9 +44,9 @@ then
     read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
     if [ "$?" = 0 ]
         then
+            echo "6buntu-Server" > ./config/hostname
             echo "Core Packages Installed Successfully"
             echo "$time Core Packages Installed Successfully" >> $LOG
-            echo "6buntu-Server" > ./config/hostname        
         else
             read -p "$USER, something went wrong! Please try the installation again"
             echo "$time Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
@@ -62,7 +62,6 @@ then
             if [ "$?" = 0 ]
                 then
                     echo "6buntu-Desktop" > ./config/hostname
-                    echo "$USER, I have successfully installed all necessary packages."
                     echo "Desktop Packages Installed Successfully"
                     echo "$time Desktop Packages Installed Successfully" >> $LOG
                 else
@@ -76,6 +75,7 @@ then
             echo "$time Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
     sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
+    echo "$USER, I have successfully installed all necessary packages."
     read -p "Please press Enter to continue"
 # Changing desktop configuration and enabling minor security features for remote desktop
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
@@ -98,7 +98,7 @@ then
             echo "All system packages upgraded successfully"
             echo "$time All system packages upgraded successfully" >> $LOG
         else
-            echo "There were one or more errors during the system packages upgrade process"
+            read -p "There were one or more errors during the system packages upgrade process"
             echo "There were one or more errors during the system packages upgrade process" >> $LOG
     fi
     sudo apt-get build-dep -y openssh miredo && echo "Dependencies built successfully for OpenSSH and Miredo" && echo "$time Dependencies built successfully for OpenSSH and Mired" >> $LOG
