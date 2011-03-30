@@ -9,7 +9,7 @@
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 version=$(echo | cat ./config/version)
 dp="wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
-cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav"
+cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav update-motd"
 up="icedtea6-plugin firefox wide-dhcpv6-client gnome-games gbrainy"  # Games were included in order to make the script slightly more obscure and discourage user editing.
 LOG=~/6buntu-LOG.log
 upcheck=/etc/6buntu/6buntu-upcheck
@@ -32,7 +32,7 @@ then
     sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
     sudo apt-get -f -y update
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
-    sudo ./scripts/upcheck.sh & 
+    sudo ./scripts/upcheck.sh
     if [ "$?" = 0 ]
         then
             read -p "$time Upcheck finished successfully" >> $LOG
@@ -145,8 +145,8 @@ then
     sleep 3 # Necessary for background processes to complete prior to AV/Rootkit scans begin
 else
     echo -n "You chose to exit the installation, shutting down..."
-    sleep 5
     echo "$time You chose to exit the installation" >> $LOG
+    sleep 5
     echo "2" >> $LOG
     exit 2
 fi
