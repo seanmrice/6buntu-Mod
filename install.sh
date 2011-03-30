@@ -46,7 +46,7 @@ then
         then
             echo "Core Packages Installed Successfully"
             echo "$time Core Packages Installed Successfully" >> $LOG
-            sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
+            echo "6buntu-Server" > ./config/hostname        
         else
             read -p "$USER, something went wrong! Please try the installation again"
             echo "$time Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
@@ -61,6 +61,7 @@ then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
             if [ "$?" = 0 ]
                 then
+                    echo "6buntu-Desktop" > ./config/hostname
                     echo "$USER, I have successfully installed all necessary packages."
                     echo "Desktop Packages Installed Successfully"
                     echo "$time Desktop Packages Installed Successfully" >> $LOG
@@ -74,6 +75,7 @@ then
             echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully."
             echo "$time Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
+    sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
     read -p "Please press Enter to continue"
 # Changing desktop configuration and enabling minor security features for remote desktop
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
