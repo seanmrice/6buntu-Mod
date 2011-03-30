@@ -8,7 +8,7 @@
 
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 version=$(echo | cat ./config/version)
-dp="wine winetricks google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
+dp="wine winetricks picasa google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
 cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav update-motd"
 up="icedtea6-plugin firefox wide-dhcpv6-client gnome-games gbrainy"  # Games were included in order to make the script slightly more obscure and discourage user editing.
 LOG=~/6buntu-LOG.log
