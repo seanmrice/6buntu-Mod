@@ -35,9 +35,11 @@ then
     sudo ./scripts/upcheck.sh
     if [ "$?" = 0 ]
         then
-            read -p "$time Upcheck finished successfully" >> $LOG
+            echo "UpCheck finished successfully"
+            echo "$time Upcheck finished successfully" >> $LOG
         else
-            read -p "$time Problem occured with Upcheck script and exited without a 0 status, please see logfile" >> $LOG
+            read -p "A problem occured with UpCheck, press enter to continue"
+            echo "$time Problem occured with Upcheck script and exited without a 0 status, please see logfile" >> $LOG
     fi
 # Executing installation block
     echo "Starting installation per user request" >> $LOG 
