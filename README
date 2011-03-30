@@ -9,13 +9,13 @@ If you don't want to install the desktop packages, answer "no" when the installa
 You can also run this from the GUI by clicking on install.sh and clicking "Run in Terminal"
 
 It is important to note that the script will install the following packages as "Core Packages":
-    miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl
-    preload samba aide chkrootkit cpudyn clamav
+    miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server 
+    denyhosts nmap ssmping openssl preload samba aide chkrootkit cpudyn clamav update-motd
 
 The script will install the follwoing packages as "Desktop Packages":
-    wine google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager ubuntu-restricted-extras 
-    gnome-themes-more
+    wine winetricks picasa google-chrome-stable aide chkrootkit cpudyn flashplugin-installer compiz-fusion-plugins-extra 
+    compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw
 
 The script will also remove the following "Unnecessary Packages":
-    icedtea6-plugin firefox wide-dhcpv6-client
+    icedtea6-plugin firefox wide-dhcpv6-client gnome-games gbrainy
     *If one or more of these packages are not installed, don't worry, the script will just check to make sure and then continue.
