@@ -81,10 +81,11 @@ then
     read -p "Please press Enter to continue"
 # Changing desktop configuration and enabling minor security features for remote desktop
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_filename "./config/Galaxy.png"
+    sudo gconftool-2 --set /apps/compiz/plugins/wallpaper/screen0/options/images --type list --list-type string "[file:./config/Galaxy.png]"
     sudo gconftool-2 --type=string --set /desktop/gnome/background/picture_options "zoom"
     sudo gconftool-2 --type=boolean --set /desktop/gnome/remote_access/require_encryption "1"
     sudo gconftool-2 --type=string --set /apps/gnome-session/options/splash_image "./config/6-splash.png"
-    sudo gconftool-2 --type=string --set /apps/compiz/general/allscreens/options/active_plugins "core,cpp,move,resize,place,decoration,workarounds,mousepoll,text,imgjpg,regex,dbus,svg,gnomecompat,png,crashhandler,thumbnail,loginout,animation,blur,wobbly,cube,animationaddon,3d,rotate,scale,cubeaddon,expo,ezoom,bench"
+    sudo gconftool-2 --type=string --set /apps/compiz/general/screen0/options/active_plugins "core,cpp,move,resize,place,decoration,workarounds,mousepoll,text,imgjpg,regex,dbus,svg,gnomecompat,png,crashhandler,thumbnail,loginout,animation,blur,wobbly,cube,animationaddon,3d,rotate,scale,cubeaddon,expo,ezoom,bench"
     if [ "$?" = 0 ]
         then
             echo "Desktop settings configured successfully"
