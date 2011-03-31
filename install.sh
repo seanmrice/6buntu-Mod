@@ -114,17 +114,8 @@ then
         else
             echo "$time Miredo daemon has restarted successfully" >> $LOG
     fi
-# Configuring SSH Server and restarting it
-    sudo cp ./config/sshd_config /etc/ssh/sshd_config
-    sudo cp ./config/ssh_config /etc/ssh/ssh_config
-    if [ ! -e ~/.ssh/id_rsa ]
-        then 
-            ssh-keygen -t rsa && echo "$time SSH Keys generated successfully!" >> $LOG
-        else
-            echo "SSH keys already exist!  Continuing installation!"
-            echo "$time SSH keys already exist!  Not generating new keys, and continuing installation" >> $LOG
-    fi
-    sudo /etc/init.d/ssh restart
+# Configuring Security Settings
+    ./scripts/security.sh
 # Configuring and restarting Denyhosts
     sudo cp ./config/denyhosts.conf /etc/denyhosts.conf && echo "$time Denyhosts has been configured successfully" >> $LOG
     sudo /etc/init.d/denyhosts restart
