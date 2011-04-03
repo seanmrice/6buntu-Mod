@@ -13,6 +13,10 @@ if [ -e /etc/6buntu ]
                 sudo chmod 1775 /etc/6buntu
                 if grep $upcheck -ne "$version" >> /dev/null
                     then
+                        sudo cp ./config/sources.list /etc/apt/sources.list
+                        sudo add-apt-repository ppa:ubuntu-wine/ppa
+                        sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+                        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
                         sudo echo "$version" > $upcheck && echo "$time Version update file written successfully" >> $LOG
                         sudo echo "$version \n \l" > ./config/issue && sudo cp ./config/issue /etc/issue && echo "issue successfully updated" && echo "$time issue successfully updated" >> $LOG
                         sudo echo "$version" > ./config/issue.net && sudo cp ./config/issue.net /etc/issue.net && echo "issue.net successfully updated" && echo "$time issue.net successfully updated" >>$LOG
@@ -27,7 +31,11 @@ if [ -e /etc/6buntu ]
                 exit 300
         fi
     else
-        sudo mkdir /etc/6buntu && sudo chmod 1777 /etc/6buntu && sudo echo "$version" > $upcheck && echo "$time Successfully created upcheck file" >> $LOG
+        sudo cp ./config/sources.list /etc/apt/sources.list
+        sudo add-apt-repository ppa:ubuntu-wine/ppa
+        sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
+        sudo mkdir /etc/6buntu && sudo chmod 1775 /etc/6buntu && sudo echo "$version" > $upcheck && echo "$time Successfully created upcheck file" >> $LOG
         sudo echo "$version \n \l" > ./config/issue && sudo cp ./config/issue /etc/issue && echo "issue successfully updated" && echo "$time issue successfully updated" >> $LOG
         sudo echo "$version" > ./config/issue.net && sudo cp ./config/issue.net /etc/issue.net && echo "issue.net successfully updated" && echo "$time issue.net successfully updated" >>$LOG
 fi

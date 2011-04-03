@@ -26,10 +26,7 @@ read line
 if [ "$line" = yes -o [Yy] ]
 then
 # Configuring sources and updating them
-    sudo cp ./config/sources.list /etc/apt/sources.list
-    sudo add-apt-repository ppa:ubuntu-wine/ppa
-    sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com DCF9F87B6DFBCBAE F9A2F76A9D1A0061 A040830F7FAC5991 2EBC26B60C5A2783
+
     sudo apt-get -f -y update
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
     sudo ./scripts/upcheck.sh
@@ -154,7 +151,7 @@ if [ -d /infected ]
         sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
     else
         sudo mkdir /infected
-        sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
+        sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results
 fi
 # Securing /infected
 sudo chmod 1740 /infected
