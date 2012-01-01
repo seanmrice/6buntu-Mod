@@ -9,7 +9,7 @@
 ######################################## DO NOT MODIFY THIS AREA ########################################################
 version=$(echo | cat ./config/version)
 dp="wine winetricks picasa google-chrome-stable cpudyn flashplugin-installer compiz-fusion-plugins-extra compizconfig-settings-manager simple-ccsm ubuntu-restricted-extras gnome-themes-more k3b gufw"
-cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba chkrootkit cpudyn clamav chkrootkit update-motd screen"
+cp="miredo sun-java6-jdk sun-java6-bin sun-java6-jre sun-java6-fonts 6tunnel automake netcat6 ndisc6 dibbler-client openssh-server denyhosts nmap ssmping openssl preload samba chkrootkit cpudyn clamav chkrootkit update-motd"
 up="gbrainy"
 LOG=./6buntu-LOG.log
 upcheck=/etc/6buntu/6buntu-upcheck
@@ -26,7 +26,6 @@ read line
 if [ "$line" = yes -o [Yy] ]
 then
 # Configuring sources and updating them
-
     sudo apt-get -f -y update
 # Generating 6buntu upcheck file in /etc if one doesn't exist already
     sudo ./scripts/upcheck.sh
@@ -43,14 +42,14 @@ then
     read -p "$USER, I am installing Core Packages: $cp"; sudo apt-get install -y $sp
     if [ "$?" = 0 ]
         then
-            echo "6buntu-Server" > ./config/hostname
+            echo "6buntu-Server" > $HOSTNAME
             echo "Core Packages Installed Successfully"
             echo "$time Core Packages Installed Successfully" >> $LOG
         else
             read -p "$USER, something went wrong! Please try the installation again"
             echo "$time Core Packages Installation error, please use: sudo apt-get -f install to correct the problem and then retry the installation" >> $LOG
             echo "500" >> $LOG
-            exit 500  #Error 500 means Core Packages Installation Failure#
+            exit 500  #Error 500 means Core Package Installation Failure#
     fi
     echo "Would you like to install the Desktop Packages?"
     echo -n "(Yes or no): "
@@ -60,7 +59,7 @@ then
             read -p "$USER, I am installing Desktop Packages: $dp"; sudo apt-get install -y $dp
             if [ "$?" = 0 ]
                 then
-                    echo "6buntu-Desktop" > ./config/hostname
+                    echo "6buntu-Desktop" > $HOSTNAME
                     echo "Desktop Packages Installed Successfully"
                     echo "$time Desktop Packages Installed Successfully" >> $LOG
                 else
@@ -73,7 +72,16 @@ then
             echo "Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully."
             echo "$time Desktop Packages skipped!  If this is incorrect, restart the installation and read the prompts more carefully." >> $LOG
     fi
-    sudo cp ./config/hostname /etc/hostname && date >> $LOG && echo "Hostname configured successfully"
+    echo -n "$USER, would you like to configure a custom hostname? [Y/n]: "
+    read HN1
+    if [ "$HN1" = [yY] ]
+        then
+            echo -n "What would you like to call the computer? : "
+            read HOSTNAME
+        else
+            :
+    fi
+    sudo hostname $HOSTNAME && date >> $LOG && echo "Hostname configured successfully"
     echo "$USER, I have successfully installed all necessary packages."
     read -p "Please press Enter to continue"
 # Changing desktop configuration and enabling minor security features for remote desktop
@@ -91,7 +99,15 @@ then
             echo "Desktop settings could not be configured properly"
             echo "$time Desktop settings could not be configured properly" >> $LOG
     fi
+
+#Install the "update" command in the /usr/sbin/ folder
+    UPD=/usr/sbin/update
+    sudo touch /usr/sbin/update
+    sudo echo "#!/bin/bash" >> $UPD
+    sudo echo "apt-get update" >> $UPD
+    sudo echo "apt-get dist-upgrade -y" >> $UPD
 # Updating the system and building necessary dependencies
+    sudo apt-get update
     sudo apt-get dist-upgrade -y
     if [ "$?" = 0 ]
         then
@@ -123,7 +139,7 @@ then
     read line3    
     if [ "$line3" = yes ]
         then
-            sudo apt-get -y -f autoremove "$up" $&& echo "$time Unnecessary Packages removed successfully" >> $LOG
+            sudo apt-get -y -f autoremove "$up" && echo "$time Unnecessary Packages removed successfully" >> $LOG
         else
             if [ "$line3" = no -o [Nn] ]
                 then        
@@ -147,7 +163,7 @@ sudo chkrootkit > ./Rootkit_Scan_Results &
 sudo freshclam > ./ClamAV_Results &
 if [ -d /infected ]
     then
-        chmod 0777 /infected  # Un-securing /infected to start clamscan
+        chmod 0777 /infected  # Unlocking /infected to start clamscan
         sudo clamscan -r --move=/infected / --exclude-dir=/sys --exclude-dir=/dev --exclude-dir=/proc >> ./ClamAV_Results &
     else
         sudo mkdir /infected
