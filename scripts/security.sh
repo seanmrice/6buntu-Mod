@@ -18,8 +18,4 @@ if [ ! -e ~/.ssh/id_rsa ]
         echo "$time SSH keys already exist!  Not generating new keys, and continuing installation" >> $LOG
 fi
 sudo /etc/init.d/ssh restart
-# Configuring UFW for Samba, SSH, and VNC
-
-# John, add the UFW between these two last comments and remove this comment before committing the change.  If you think of any more
-# Security features that need to be configured, just make sure to comment on them so I can track changes
 exit 0
